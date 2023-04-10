@@ -1,5 +1,14 @@
 from colorthief import ColorThief
 import os
+import RPi.GPIO as GPIO
+import time
+from adafruit_servokit import ServoKit
+
+kit = ServoKit(channels=16)
+
+kit.servo[0].angle = 0
+kit.servo[1].angle = 0
+kit.servo[2].angle = 0
 
 KNOWN_COLORS = {"Red": (255, 0, 0), "Yellow": (255, 255, 0)}
 
@@ -48,20 +57,25 @@ def MakeMove(Move):
     
     if int(Pos[0]) == 1:
         print("Top Motors in Pos 1")
+        kit.servo[0].angle = 180
     else:
         print("Top Motors in Pos 0")
+        kit.servo[0].angle = 0
 
     if int(Pos[1]) == 1:
         print("Mid Motors in Pos 1")
+        kit.servo[1].angle = 180
     else:
         print("Mid Motors in Pos 0")
+        kit.servo[1].angle = 0
 
     if int(Pos[2]) == 1:
         print("Bot Motors in Pos 1")
+        kit.servo[2].angle = 180
     else:
         print("Bot Motors in Pos 0")
-    
-        
+        kit.servo[2].angle = 90
+    time.sleep(10)
 
 def EndGame(Move):
     print("Game ending")
@@ -75,7 +89,7 @@ def EndGame(Move):
 def Reset():
     print("Reseting Board")
     main()
-
+            
 def ColourPicker():
     for filename in os.listdir('Images'):
         print(filename)
